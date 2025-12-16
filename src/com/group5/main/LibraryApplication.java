@@ -369,7 +369,7 @@ public class LibraryApplication {
         		
         		if (loanSearch) {
         			System.out.print (Constants.strINVALID_LOAN_ID_FOUND);
-
+        			loanSearch = false;
         		} else {
         			//valid loan ID
         			ret = Integer.parseInt(String.valueOf(option));

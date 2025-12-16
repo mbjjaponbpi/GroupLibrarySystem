@@ -257,7 +257,7 @@ public class LibraryImpl implements LibraryService {
 				
 				int bookReturned = loanArray[i].getBook().getId();
 				bookReturned -= 1;
-				//System.out.println("bookReturned: " + bookReturned);
+				System.out.println("bookReturned: " + bookReturned);
 				
 				
 				//flag the book as available
@@ -366,13 +366,17 @@ public class LibraryImpl implements LibraryService {
 					}
 				} else if (displayType == 3) {  //borrowed books
 					if (bookArray[i].isBorrowed()) {
-						
+						//System.out.println(bookArray[i].getTitle());
 						for (int j = 0; j < loancnt; j++ ) { 
-							if (loanArray[j].getBook().getId() == bookArray[i].getId()) {
-								userBorrower = loanArray[j].getUser().getName();
-								//System.out.println("userborrower: " + userBorrower);
-								break;
+							//System.out.println(j + " loanId: " + loanArray[j].getLoanId());
+							if (loanArray[j].getLoanId() > 0) {
+								if (loanArray[j].getBook().getId() == bookArray[i].getId()) {
+									userBorrower = loanArray[j].getUser().getName();
+									//System.out.println("userborrower: " + userBorrower);
+									break;
+								}
 							}
+							
 						}
 						System.out.println("" + 
 										" | " + padRight(bookArray[i].getId().toString(), maxLenBookId, " ") + 

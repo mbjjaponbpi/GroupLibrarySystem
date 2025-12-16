@@ -70,7 +70,7 @@ public abstract class Constants {
 	
 	public static final String strINVALID_LOAN_ID       = " Invalid loan ID. Please enter another one: ";
 
-	public static final String strINVALID_LOAN_ID_FOUND = "\" Loan ID found. Please enter another one: \"";
+	public static final String strINVALID_LOAN_ID_FOUND = " Loan ID found. Please enter another one: ";
 	
 
 }
