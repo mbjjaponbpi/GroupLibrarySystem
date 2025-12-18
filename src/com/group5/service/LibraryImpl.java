@@ -162,7 +162,7 @@ public class LibraryImpl implements LibraryService {
 	
 
 	@Override
-	public Library borrowBook(Library library, Loan loan, User user, int bookChoice) {
+	public Library borrowBook(Library library, Loan loan, User user, int bookIdChoice) {
 		// TODO Auto-generated method stub
 		System.out.println(" Trying to process your request... ");
 		
@@ -171,31 +171,39 @@ public class LibraryImpl implements LibraryService {
 		
 		//System.out.println( "bookChoice: " + bookChoice);
 
-		if (!bookArray[bookChoice].isBorrowed()) {
-			//System.out.println(bookArray[bookChoice].getTitle());
-			//book is available, can be tagged as loaned
-			//check where to store the loanId
-			for (int i = 0 ; i < loancnt; i++) {
+		int bookElement = findBookElement(library, bookIdChoice);
+		
+		if (bookElement >= 0) {
+			if (!bookArray[bookElement].isBorrowed()) {
+				//System.out.println(bookArray[bookChoice].getTitle());
+				//book is available, can be tagged as loaned
+				//check where to store the loanId
+				for (int i = 0 ; i < loancnt; i++) {
 
-				//loanArray[i].getLoanId();
-				
-				if (loanArray[i].getLoanId() == 0) {
-					//set the loan Id value
-					loanArray[i].setBook(bookArray[bookChoice]);
-					loanArray[i].setLoanId(loan.getLoanId());
-					loanArray[i].setUser(user);
-
-					//flag the book as borrowed
-					bookArray[bookChoice].setIsBorrowed(true);
-					System.out.println(" You have successfully loaned the book entitled " + bookArray[bookChoice].getTitle());
+					//loanArray[i].getLoanId();
 					
-					break;
+					if (loanArray[i].getLoanId() == 0) {
+						//set the loan Id value
+						loanArray[i].setBook(bookArray[bookElement]);
+						loanArray[i].setLoanId(loan.getLoanId());
+						loanArray[i].setUser(user);
+
+						//flag the book as borrowed
+						bookArray[bookElement].setIsBorrowed(true);
+						System.out.println(" You have successfully loaned the book entitled " + bookArray[bookElement].getTitle());
+						
+						break;
+					}
 				}
+			} else {
+				//should not be encountered here
+				System.out.println("Sorry, the selected book is not available.");
 			}
 		} else {
 			//should not be encountered here
 			System.out.println("Sorry, the selected book is not available.");
 		}
+
 		
 		library.setBookArray(bookArray);
 		library.setLoanArray(loanArray);
@@ -204,6 +212,27 @@ public class LibraryImpl implements LibraryService {
 
 	}
 
+	
+	public int findBookElement(Library library, Integer input) {
+		int bookElement = -1;
+		
+		bookArray = new Book[bookcnt];
+		bookArray = library.getBookArray();
+
+    	//System.out.println("debug input " + input);
+    	//check option
+    	for (int i = 0; i < bookcnt ; i++) {
+    		
+    		if (input == bookArray[i].getId()) {
+    			bookElement = i;
+    			break;
+    		}
+    	}
+		return bookElement;
+	}
+	
+	
+	
 	
 	public boolean findBook(Library library, Integer input) {
 		boolean isFound = false;
@@ -255,22 +284,27 @@ public class LibraryImpl implements LibraryService {
 			if (loanArray[i].getLoanId() == loanChoice) {
 				//System.out.println("returning: " + loanArray[i].getLoanId());
 				
-				int bookReturned = loanArray[i].getBook().getId();
-				bookReturned -= 1;
-				System.out.println("bookReturned: " + bookReturned);
-				
-				
-				//flag the book as available
-				bookArray[bookReturned].setIsBorrowed(false);
-				
-				//unset the loan Id value
-				loanArray[i].setBook(null);
-				loanArray[i].setLoanId(0);
-				loanArray[i].setUser(null);
+				int bookIdReturned = loanArray[i].getBook().getId();
+				int bookElement = findBookElement(library, bookIdReturned);
 
 				
-				System.out.println(" You have successfully returned the book entitled " + bookArray[bookReturned].getTitle());
-				break;
+				//bookReturned -= 1;
+				//System.out.println("bookReturned: " + bookReturned);
+				
+				if (bookElement >= 0) {
+					//flag the book as available
+					bookArray[bookElement].setIsBorrowed(false);
+					
+					//unset the loan Id value
+					loanArray[i].setBook(null);
+					loanArray[i].setLoanId(0);
+					loanArray[i].setUser(null);
+
+					
+					System.out.println(" You have successfully returned the book entitled " + bookArray[bookElement].getTitle());
+					break;
+					
+				}
 			}
 		}
 

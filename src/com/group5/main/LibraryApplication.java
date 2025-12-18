@@ -143,18 +143,18 @@ public class LibraryApplication {
 	            	//libraryImpl.displayAllBooks(this.library);
 	            	libraryImpl.displayAvailableBooks(this.library);
 	            	
-	            	int bookChoice = askBookChoice(input);
+	            	int bookIdChoice = askBookChoice(input);
 	            	//System.out.println("debug -- book choice:" + retBook);
 	            	
-	            	if (bookChoice != 0) {
+	            	if (bookIdChoice != 0) {
 	            		
 	            		//book found, ask user to input loan ID
 	            		int retLoanId = askLoanId(input);
 	            		
 	            		if (retLoanId != 0) {
 		            		this.loan.setLoanId(retLoanId);
-		            		bookChoice -= 1;
-			            	this.library = this.libraryImpl.borrowBook(this.library, this.loan, this.user, bookChoice);
+		            		//bookIdChoice -= 1;
+			            	this.library = this.libraryImpl.borrowBook(this.library, this.loan, this.user, bookIdChoice);
 			            	//System.out.println("after borrow book, check if tagged as borrowed :" +  this.library.getBookArray()[retBook-1].isBorrowed());
 	            		}
 	            		displayLibraryMenu();
@@ -231,6 +231,7 @@ public class LibraryApplication {
     	System.out.print  (Constants.strPROMPT_ENTER_BOOKID_FOR_BORROWING);
     	//user input (Book id to be borrowed)
     	boolean bookFound = false;
+    	int bookId;
     	
     	char option;
         do {
@@ -254,17 +255,20 @@ public class LibraryApplication {
         		System.out.print (Constants.strERROR_BOOK_NOT_FOUND);
         	
         	} else {
-            	bookFound = libraryImpl.findBook(this.library, Integer.parseInt(String.valueOf(option)));
-        		
-        		if (bookFound) {
+            	bookId = Integer.parseInt(String.valueOf(option));
+            	bookFound = libraryImpl.findBook(this.library, bookId);
+
+            	if (bookFound) {
+        			int bookElement = libraryImpl.findBookElement(library, bookId);
+        			
         			//check if currently loaned
-        			if (this.library.getBookArray()[(Integer.parseInt(String.valueOf(option)))-1].isBorrowed()) {
+        			if (this.library.getBookArray()[bookElement].isBorrowed()) {
         				//currently borrowed
         				System.out.print (Constants.strERROR_BOOK_OUT);
         				bookFound = false;
         				
         			} else {
-		        		ret = Integer.parseInt(String.valueOf(option));
+		        		ret = bookId;
 		        		bookFound = true;
 		        		break;
         			}
