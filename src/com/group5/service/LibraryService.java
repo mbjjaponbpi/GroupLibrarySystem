@@ -21,4 +21,11 @@ public interface LibraryService {
 	
 	public Library returnBook(Library library, int loanChoice);
 	
+	public boolean findBook(Library library, Integer bookId);
+
+	public int findBookElement(Library library, Integer bookId);
+
+	public boolean findLoan(Library library, Integer loanId);
+
+		
 }

@@ -26,7 +26,7 @@ public class LibraryImpl implements LibraryService {
 	private final static Integer maxLenLoanId = 7;
 	
 	
-	
+	@Override
 	public final Book[] initializeBooks() {
 		bookArray = new Book[bookcnt];
 		
@@ -68,7 +68,7 @@ public class LibraryImpl implements LibraryService {
 		return bookArray;
 	}
 
-	
+	@Override
 	public Loan[] initializeLoans() {
 		loanArray = new Loan[loancnt];
 		
@@ -83,11 +83,6 @@ public class LibraryImpl implements LibraryService {
 	}
 	
 	
-	
-	public static int getBookcnt() {
-		return bookcnt;
-	}
-
 	@Override
 	public void displayAllBooks (Library library) {
 		// TODO Auto-generated method stub
@@ -207,7 +202,7 @@ public class LibraryImpl implements LibraryService {
 
 	}
 
-	
+	@Override
 	public int findBookElement(Library library, Integer input) {
 		int bookElement = -1;
 		
@@ -227,7 +222,7 @@ public class LibraryImpl implements LibraryService {
 	
 	
 	
-	
+	@Override
 	public boolean findBook(Library library, Integer input) {
 		boolean isFound = false;
 		
@@ -245,7 +240,7 @@ public class LibraryImpl implements LibraryService {
 		return isFound;
 	}
 	
-	
+	@Override
 	public boolean findLoan(Library library, Integer input) {
 		boolean isFound = false;
 		

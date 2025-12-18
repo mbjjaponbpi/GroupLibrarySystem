@@ -41,6 +41,7 @@ import java.util.Scanner;
 
 import com.group5.model.*;
 import com.group5.service.LibraryImpl;
+import com.group5.service.LibraryService;
 import com.group5.constants.Constants;
 
 
@@ -50,7 +51,7 @@ public class LibraryApplication {
 	private Loan loan;
 	
 	private Library library;
-	private LibraryImpl libraryImpl;
+	private LibraryService libraryService;
 	
 	public LibraryApplication () {
 		// initial user creation
@@ -59,9 +60,10 @@ public class LibraryApplication {
 
 		// initial library creation
 		this.library = new Library();
-		this.libraryImpl = new LibraryImpl ();
-		this.library.setBookArray(libraryImpl.initializeBooks());
-		this.library.setLoanArray(libraryImpl.initializeLoans());
+		this.libraryService = new LibraryImpl();
+		
+		this.library.setBookArray(libraryService.initializeBooks());
+		this.library.setLoanArray(libraryService.initializeLoans());
 
 	}
 	
@@ -115,7 +117,7 @@ public class LibraryApplication {
 	            	//[1] Display All Books
 	            	displayLibraryMenu();
 	            	System.out.println(Constants.strDISPLAY_SELECTED_OPTION1);
-	            	libraryImpl.displayAllBooks(this.library);
+	            	libraryService.displayAllBooks(this.library);
 	            	askMenuChoice();
 	                break;
 	
@@ -123,7 +125,7 @@ public class LibraryApplication {
 	            	//[2] Display Available Books
 	            	displayLibraryMenu();
 	            	System.out.println(Constants.strDISPLAY_SELECTED_OPTION2);
-	            	libraryImpl.displayAvailableBooks(this.library);
+	            	libraryService.displayAvailableBooks(this.library);
 	            	askMenuChoice();
 	                break;
 	
@@ -131,7 +133,7 @@ public class LibraryApplication {
 	            	//[3] Display All Borrowed Books 
 	            	displayLibraryMenu();
 	            	System.out.println(Constants.strDISPLAY_SELECTED_OPTION3);
-	            	libraryImpl.displayAllBorrowedBooks(this.library);
+	            	libraryService.displayAllBorrowedBooks(this.library);
 	            	askMenuChoice();
 	                break;
 	
@@ -140,8 +142,7 @@ public class LibraryApplication {
 	            	displayLibraryMenu();
 	            	System.out.println(Constants.strDISPLAY_SELECTED_OPTION4);
 	            	
-	            	//libraryImpl.displayAllBooks(this.library);
-	            	libraryImpl.displayAvailableBooks(this.library);
+	            	libraryService.displayAvailableBooks(this.library);
 	            	
 	            	int bookIdChoice = askBookChoice(input);
 	            	
@@ -153,7 +154,7 @@ public class LibraryApplication {
 	            		if (retLoanId != 0) {
 		            		this.loan.setLoanId(retLoanId);
 		            		//bookIdChoice -= 1;
-			            	this.library = this.libraryImpl.borrowBook(this.library, this.loan, this.user, bookIdChoice);
+			            	this.library = this.libraryService.borrowBook(this.library, this.loan, this.user, bookIdChoice);
 	            		}
 	            		displayLibraryMenu();
 		            	
@@ -170,14 +171,14 @@ public class LibraryApplication {
 	            	displayLibraryMenu();
 	            	System.out.println(Constants.strDISPLAY_SELECTED_OPTION5);
 	            	
-	            	libraryImpl.displayAllLoans(this.library);
+	            	libraryService.displayAllLoans(this.library);
 	            	
 	            	int loanChoice = askLoanIdForReturn(input);
 	            	
 	            	if (loanChoice != 0) {
 	            		
 	            		//loan found, ask user to input loan ID
-		            	this.library = this.libraryImpl.returnBook(this.library, loanChoice);
+		            	this.library = this.libraryService.returnBook(this.library, loanChoice);
 	            		displayLibraryMenu();
 		            	
 	            	} else {
@@ -251,10 +252,10 @@ public class LibraryApplication {
         	
         	} else {
             	bookId = Integer.parseInt(String.valueOf(option));
-            	bookFound = libraryImpl.findBook(this.library, bookId);
+            	bookFound = libraryService.findBook(this.library, bookId);
 
             	if (bookFound) {
-        			int bookElement = libraryImpl.findBookElement(library, bookId);
+        			int bookElement = libraryService.findBookElement(library, bookId);
         			
         			//check if currently loaned
         			if (this.library.getBookArray()[bookElement].isBorrowed()) {
@@ -308,7 +309,7 @@ public class LibraryApplication {
         		System.out.print (Constants.strINVALID_LOAN_ID);
         		
         	} else {
-        		loanSearch = libraryImpl.findLoan(this.library, Integer.parseInt(String.valueOf(option)));
+        		loanSearch = libraryService.findLoan(this.library, Integer.parseInt(String.valueOf(option)));
         		
         		if (!loanSearch) {
         			System.out.print (Constants.strINVALID_LOAN_ID);
@@ -360,7 +361,7 @@ public class LibraryApplication {
         		System.out.print (Constants.strINVALID_LOAN_ID);
         		
         	} else {
-        		loanSearch = libraryImpl.findLoan(this.library, Integer.parseInt(String.valueOf(option)));
+        		loanSearch = libraryService.findLoan(this.library, Integer.parseInt(String.valueOf(option)));
         		
         		if (loanSearch) {
         			System.out.print (Constants.strINVALID_LOAN_ID_FOUND);
