@@ -32,33 +32,33 @@ public class LibraryImpl implements LibraryService {
 		
 		//book 1
 		bookArray[0] = new Book();
-		bookArray[0].setId(1);
-		bookArray[0].setAuthor("Author 1");
-		bookArray[0].setTitle("Book 1 Title");
+		bookArray[0].setId(3);
+		bookArray[0].setAuthor("Agatha Christie");
+		bookArray[0].setTitle("And Then There Were None");
 		
 		//book 2
 		bookArray[1] = new Book();
-		bookArray[1].setId(2);
-		bookArray[1].setAuthor("JK Rowling");
-		bookArray[1].setTitle("Book 2 Title long title here Harry Potter and the chamber of secrets");
+		bookArray[1].setId(4);
+		bookArray[1].setAuthor("Raymond Chandler");
+		bookArray[1].setTitle("The Big Sleep");
 		
 		//book 3
 		bookArray[2] = new Book();
-		bookArray[2].setId(3);
-		bookArray[2].setAuthor("Author 3");
-		bookArray[2].setTitle("Book 3 Title");
+		bookArray[2].setId(5);
+		bookArray[2].setAuthor("Arthur Conan Doyle");
+		bookArray[2].setTitle("The Hound of the Baskervilles");
 		
 		//book 4
 		bookArray[3] = new Book();
-		bookArray[3].setId(4);
-		bookArray[3].setAuthor("Author 4");
-		bookArray[3].setTitle("Book 4 Title");
+		bookArray[3].setId(6);
+		bookArray[3].setAuthor("Dan Brown");
+		bookArray[3].setTitle("The Da Vinci Code");
 		
 		//book 5
 		bookArray[4] = new Book();
-		bookArray[4].setId(5);
-		bookArray[4].setAuthor("Author 5");
-		bookArray[4].setTitle("Book 5 Title");
+		bookArray[4].setId(7);
+		bookArray[4].setAuthor("Stieg Larsson");
+		bookArray[4].setTitle("The Girl with the Dragon Tattoo");
 		
 		//set isBorrowed to false
 		for (int i = 0 ; i < bookcnt; i++) {
@@ -164,24 +164,19 @@ public class LibraryImpl implements LibraryService {
 	@Override
 	public Library borrowBook(Library library, Loan loan, User user, int bookIdChoice) {
 		// TODO Auto-generated method stub
-		System.out.println(" Trying to process your request... ");
+		System.out.println(Constants.strPROCESSLOADING);
 		
 		loanArray = library.getLoanArray();
 		bookArray = library.getBookArray();
 		
-		//System.out.println( "bookChoice: " + bookChoice);
-
 		int bookElement = findBookElement(library, bookIdChoice);
 		
 		if (bookElement >= 0) {
 			if (!bookArray[bookElement].isBorrowed()) {
-				//System.out.println(bookArray[bookChoice].getTitle());
 				//book is available, can be tagged as loaned
 				//check where to store the loanId
 				for (int i = 0 ; i < loancnt; i++) {
 
-					//loanArray[i].getLoanId();
-					
 					if (loanArray[i].getLoanId() == 0) {
 						//set the loan Id value
 						loanArray[i].setBook(bookArray[bookElement]);
@@ -197,11 +192,11 @@ public class LibraryImpl implements LibraryService {
 				}
 			} else {
 				//should not be encountered here
-				System.out.println("Sorry, the selected book is not available.");
+				System.out.println(Constants.strSELECTEDBOOKUNAVAILABLE );
 			}
 		} else {
 			//should not be encountered here
-			System.out.println("Sorry, the selected book is not available.");
+			System.out.println(Constants.strSELECTEDBOOKUNAVAILABLE );
 		}
 
 		
@@ -219,7 +214,6 @@ public class LibraryImpl implements LibraryService {
 		bookArray = new Book[bookcnt];
 		bookArray = library.getBookArray();
 
-    	//System.out.println("debug input " + input);
     	//check option
     	for (int i = 0; i < bookcnt ; i++) {
     		
@@ -240,7 +234,6 @@ public class LibraryImpl implements LibraryService {
 		bookArray = new Book[bookcnt];
 		bookArray = library.getBookArray();
 
-    	//System.out.println("debug input " + input);
     	//check option
     	for (int i = 0; i < bookcnt ; i++) {
     		
@@ -259,10 +252,8 @@ public class LibraryImpl implements LibraryService {
 		loanArray = new Loan[loancnt];
 		loanArray = library.getLoanArray();
 
-    	//System.out.println("debug -- loaninput" + input.toString());
     	//check option
     	for (int i = 0; i < loancnt ; i++) {
-    		//System.out.println("debug -- listing loanarray " + loanArray[i].getLoanId().toString());
     		if (input.toString().equalsIgnoreCase(loanArray[i].getLoanId().toString())) {
     			isFound = true;
     		}
@@ -274,7 +265,7 @@ public class LibraryImpl implements LibraryService {
 	@Override
 	public Library returnBook(Library library, int loanChoice) {
 		// TODO Auto-generated method stub
-		System.out.println(" Trying to process your request... ");
+		System.out.println(Constants.strPROCESSLOADING );
 		
 		loanArray = library.getLoanArray();
 		bookArray = library.getBookArray();
@@ -282,15 +273,10 @@ public class LibraryImpl implements LibraryService {
 
 		for (int i = 0 ; i < loancnt; i++) {
 			if (loanArray[i].getLoanId() == loanChoice) {
-				//System.out.println("returning: " + loanArray[i].getLoanId());
 				
 				int bookIdReturned = loanArray[i].getBook().getId();
 				int bookElement = findBookElement(library, bookIdReturned);
 
-				
-				//bookReturned -= 1;
-				//System.out.println("bookReturned: " + bookReturned);
-				
 				if (bookElement >= 0) {
 					//flag the book as available
 					bookArray[bookElement].setIsBorrowed(false);
@@ -400,13 +386,10 @@ public class LibraryImpl implements LibraryService {
 					}
 				} else if (displayType == 3) {  //borrowed books
 					if (bookArray[i].isBorrowed()) {
-						//System.out.println(bookArray[i].getTitle());
 						for (int j = 0; j < loancnt; j++ ) { 
-							//System.out.println(j + " loanId: " + loanArray[j].getLoanId());
 							if (loanArray[j].getLoanId() > 0) {
 								if (loanArray[j].getBook().getId() == bookArray[i].getId()) {
 									userBorrower = loanArray[j].getUser().getName();
-									//System.out.println("userborrower: " + userBorrower);
 									break;
 								}
 							}

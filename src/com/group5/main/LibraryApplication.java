@@ -144,7 +144,6 @@ public class LibraryApplication {
 	            	libraryImpl.displayAvailableBooks(this.library);
 	            	
 	            	int bookIdChoice = askBookChoice(input);
-	            	//System.out.println("debug -- book choice:" + retBook);
 	            	
 	            	if (bookIdChoice != 0) {
 	            		
@@ -155,7 +154,6 @@ public class LibraryApplication {
 		            		this.loan.setLoanId(retLoanId);
 		            		//bookIdChoice -= 1;
 			            	this.library = this.libraryImpl.borrowBook(this.library, this.loan, this.user, bookIdChoice);
-			            	//System.out.println("after borrow book, check if tagged as borrowed :" +  this.library.getBookArray()[retBook-1].isBorrowed());
 	            		}
 	            		displayLibraryMenu();
 		            	
@@ -221,7 +219,6 @@ public class LibraryApplication {
 	}
 	
 	private void askMenuChoice() {
-//    	System.out.print  (" Please enter your choice: ");
     	System.out.print(Constants.strPROMPT_CHOICE);
 	}
 
@@ -246,9 +243,7 @@ public class LibraryApplication {
         	}
         	
         	
-        	//System.out.println(String.valueOf(option));
         	if (String.valueOf(option).equalsIgnoreCase("X")) {
-        		//System.out.println("Exited");
         		bookFound = true;
         		break;
         	} else if (!isNumeric(String.valueOf(option))) {
@@ -303,9 +298,7 @@ public class LibraryApplication {
         	}
         	
         	
-        	//System.out.println(String.valueOf("loanid input " + option));
         	if (String.valueOf(option).equalsIgnoreCase("X")) {
-        		//System.out.println("Exited");
         		loanSearch = true;
         		break;
         	} else if (!isNumeric(String.valueOf(option))) {
@@ -357,9 +350,7 @@ public class LibraryApplication {
         	}
         	
         	
-        	//System.out.println(String.valueOf("loanid input " + option));
         	if (String.valueOf(option).equalsIgnoreCase("X")) {
-        		//System.out.println("Exited");
         		loanSearch = true;
         		break;
         	} else if (!isNumeric(String.valueOf(option))) {

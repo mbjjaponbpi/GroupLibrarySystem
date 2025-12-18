@@ -50,6 +50,7 @@ public abstract class Constants {
 	//option 3
 	public static final String strDISPLAY_BORROWED_BOOKS  = " Displaying all borrowed books... \n";
 	
+	
 	//option 4
 	public static final String strPROMPT_ENTER_BOOKID_FOR_BORROWING = " Please enter the book ID to be borrowed (enter X to go back to main menu): ";
 	public static final String strPROMPT_ENTER_LOANID      = " Please enter the loan ID (enter X to go back to main menu): ";
@@ -57,6 +58,10 @@ public abstract class Constants {
 	//option 5
 	public static final String strPROMPT_ENTER_LOANID_FOR_RETURN = " Please enter the loan ID to be returned (enter X to go back to main menu): ";
 
+	
+	//generic
+	public static final String strPROCESSLOADING = " Trying to process your request... ";
+	public static final String strSELECTEDBOOKUNAVAILABLE = "Sorry, the selected book is not available.";
 	
 	
 	//error prompts
