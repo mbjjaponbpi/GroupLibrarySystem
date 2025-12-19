@@ -76,6 +76,7 @@ public class LibraryApplication {
 		
         Scanner input = new Scanner(System.in);
     	String tempInput;
+    	int rowCount;
     	
 
     	boolean isUserValid = true;
@@ -90,11 +91,12 @@ public class LibraryApplication {
             }
     	} while (!isUserValid);
     	
+    	welcomeMenuChoice();
     	
     	
     	//initially display the menu
     	displayLibraryMenu();
-    	welcomeMenuChoice();
+    	askMenuChoice();
 
     	char option;
         do {
@@ -115,25 +117,25 @@ public class LibraryApplication {
             switch (option) {
 	            case '1':
 	            	//[1] Display All Books
-	            	displayLibraryMenu();
 	            	System.out.println(Constants.strDISPLAY_SELECTED_OPTION1);
 	            	libraryService.displayAllBooks(this.library);
+	            	displayLibraryMenu();
 	            	askMenuChoice();
 	                break;
 	
 	            case '2':
 	            	//[2] Display Available Books
-	            	displayLibraryMenu();
 	            	System.out.println(Constants.strDISPLAY_SELECTED_OPTION2);
 	            	libraryService.displayAvailableBooks(this.library);
+	            	displayLibraryMenu();
 	            	askMenuChoice();
 	                break;
 	
 	            case '3':
 	            	//[3] Display All Borrowed Books 
-	            	displayLibraryMenu();
 	            	System.out.println(Constants.strDISPLAY_SELECTED_OPTION3);
 	            	libraryService.displayAllBorrowedBooks(this.library);
+	            	displayLibraryMenu();
 	            	askMenuChoice();
 	                break;
 	
@@ -142,26 +144,25 @@ public class LibraryApplication {
 	            	displayLibraryMenu();
 	            	System.out.println(Constants.strDISPLAY_SELECTED_OPTION4);
 	            	
-	            	libraryService.displayAvailableBooks(this.library);
+	            	rowCount = libraryService.displayAvailableBooks(this.library);
 	            	
-	            	int bookIdChoice = askBookChoice(input);
-	            	
-	            	if (bookIdChoice != 0) {
-	            		
-	            		//book found, ask user to input loan ID
-	            		int retLoanId = askLoanId(input);
-	            		
-	            		if (retLoanId != 0) {
-		            		this.loan.setLoanId(retLoanId);
-		            		//bookIdChoice -= 1;
-			            	this.library = this.libraryService.borrowBook(this.library, this.loan, this.user, bookIdChoice);
-	            		}
-	            		displayLibraryMenu();
+	            	if (rowCount > 0) {
+		            	int bookIdChoice = askBookChoice(input);
 		            	
-	            	} else {
-	            		//exit to menu
-		            	displayLibraryMenu();
-	            	}
+		            	if (bookIdChoice != 0) {
+		            		
+		            		//book found, ask user to input loan ID
+		            		int retLoanId = askLoanId(input);
+		            		
+		            		if (retLoanId != 0) {
+			            		this.loan.setLoanId(retLoanId);
+				            	this.library = this.libraryService.borrowBook(this.library, this.loan, this.user, bookIdChoice);
+		            		}
+		            	}
+		            	
+	            	} 
+            		//exit to menu
+	            	displayLibraryMenu();
 	            	askMenuChoice();
 
 	                break;
@@ -171,20 +172,19 @@ public class LibraryApplication {
 	            	displayLibraryMenu();
 	            	System.out.println(Constants.strDISPLAY_SELECTED_OPTION5);
 	            	
-	            	libraryService.displayAllLoans(this.library);
+	            	rowCount = libraryService.displayAllLoans(this.library);
 	            	
-	            	int loanChoice = askLoanIdForReturn(input);
-	            	
-	            	if (loanChoice != 0) {
+	            	if (rowCount > 0) {
 	            		
-	            		//loan found, ask user to input loan ID
-		            	this.library = this.libraryService.returnBook(this.library, loanChoice);
-	            		displayLibraryMenu();
+		            	int loanChoice = askLoanIdForReturn(input);
 		            	
-	            	} else {
-	            		//exit to menu
-		            	displayLibraryMenu();
+		            	if (loanChoice != 0) {
+		            		//loan found, ask user to input loan ID
+			            	this.library = this.libraryService.returnBook(this.library, loanChoice);
+		            		displayLibraryMenu();
+		            	}
 	            	}
+	            	displayLibraryMenu();
 	            	askMenuChoice();
 
 	                break;
@@ -216,7 +216,7 @@ public class LibraryApplication {
 	
 	
 	private void welcomeMenuChoice() {
-    	System.out.print  (" Hello, " + user.getName() + "! " + Constants.strPROMPT_CHOICE);
+    	System.out.print  (" Hello, " + user.getName() + "!");
 	}
 	
 	private void askMenuChoice() {

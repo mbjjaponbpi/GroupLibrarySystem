@@ -3,7 +3,7 @@ package com.group5.constants;
 public abstract class Constants {
 
 	//login/menu
-	public static final String strPROMPT_USERNAME = "Enter username: ";
+	public static final String strPROMPT_USERNAME = " Enter username: ";
 	
 	public static final String strPROMPT_CHOICE = " Please enter your choice: ";
 	
@@ -76,6 +76,7 @@ public abstract class Constants {
 	public static final String strINVALID_LOAN_ID       = " Invalid loan ID. Please enter another one: ";
 
 	public static final String strINVALID_LOAN_ID_FOUND = " Loan ID found. Please enter another one: ";
-	
+
+	public static final String strNORECORDFOUND        = "     No record found";
 
 }

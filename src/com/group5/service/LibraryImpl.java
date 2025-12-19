@@ -102,7 +102,7 @@ public class LibraryImpl implements LibraryService {
 	
 	
 	@Override
-	public void displayAvailableBooks(Library library) {
+	public int displayAvailableBooks(Library library) {
 		// TODO Auto-generated method stub
     	System.out.println(Constants.strDISPLAY_AVAILABLE_BOOKS );
 
@@ -110,17 +110,23 @@ public class LibraryImpl implements LibraryService {
 		displayTableHeader(2);
 		
 		//print book list
-		displayTableDetails(library, 2);
+		int rowCount = displayTableDetails(library, 2);
+
+		if (rowCount <= 0) {
+			System.out.println(Constants.strNORECORDFOUND );
+		}
 
 		//print table footer
 		displayTableLine(2);
 		System.out.println();
 		System.out.println();
+		
+		return rowCount;
 	}
 
 
 	@Override
-	public void displayAllBorrowedBooks(Library library) {
+	public int displayAllBorrowedBooks(Library library) {
 		// TODO Auto-generated method stub
     	System.out.println(Constants.strDISPLAY_BORROWED_BOOKS );
 
@@ -128,17 +134,24 @@ public class LibraryImpl implements LibraryService {
 		displayTableHeader(3);
 		
 		//print book list
-		displayTableDetails(library, 3);
+		int rowCount = displayTableDetails(library, 3);
 
+		if (rowCount <= 0) {
+			System.out.println(Constants.strNORECORDFOUND );
+		}
+		
+		
 		//print table footer
 		displayTableLine(3);
 		System.out.println();
 		System.out.println();
+		
+		return rowCount;
 	}
 
 	
 	@Override
-	public void displayAllLoans(Library library) {
+	public int displayAllLoans(Library library) {
 		// TODO Auto-generated method stub
     	System.out.println(Constants.strDISPLAY_BORROWED_BOOKS );
 
@@ -146,13 +159,19 @@ public class LibraryImpl implements LibraryService {
 		displayTableHeader(4);
 
 		//print loan list
-		displayTableDetails(library, 4);
+		int rowCount = displayTableDetails(library, 4);
+		
+		if (rowCount <= 0) {
+			System.out.println(Constants.strNORECORDFOUND );
+		}
+		
 		
 		//print table footer
 		displayTableLine(4);
 		System.out.println();
 		System.out.println();
 		
+		return rowCount;
 	}
 	
 
@@ -351,7 +370,8 @@ public class LibraryImpl implements LibraryService {
 	 * 3 - borrowed books
 	 * 
 	 */
-	private static void displayTableDetails(Library library, int displayType) {
+	private static int displayTableDetails(Library library, int displayType) {
+		int rowCount = 0;
 		String userBorrower = "";
 		bookArray = new Book[bookcnt];
 		bookArray = library.getBookArray();
@@ -364,6 +384,7 @@ public class LibraryImpl implements LibraryService {
 			
 			for (int i = 0; i < bookcnt; i++ ) {
 				if (displayType == 1) {  //all books
+					rowCount++;
 					System.out.println("" + 
 							" | " + padRight(bookArray[i].getId().toString(), maxLenBookId, " ") + 
 							" | " + padRight(bookArray[i].getTitle(), maxLenBookTitle, " ") + 
@@ -373,6 +394,7 @@ public class LibraryImpl implements LibraryService {
 				} else if (displayType == 2) { //available books
 					
 					if (!bookArray[i].isBorrowed()) {
+						rowCount++;
 						System.out.println("" + 
 										" | " + padRight(bookArray[i].getId().toString(), maxLenBookId, " ") + 
 										" | " + padRight(bookArray[i].getTitle(), maxLenBookTitle, " ") + 
@@ -381,6 +403,7 @@ public class LibraryImpl implements LibraryService {
 					}
 				} else if (displayType == 3) {  //borrowed books
 					if (bookArray[i].isBorrowed()) {
+						rowCount++;
 						for (int j = 0; j < loancnt; j++ ) { 
 							if (loanArray[j].getLoanId() > 0) {
 								if (loanArray[j].getBook().getId() == bookArray[i].getId()) {
@@ -403,17 +426,20 @@ public class LibraryImpl implements LibraryService {
 		} else if (displayType == 4) { // all loan records
 			
 			for (int k = 0 ; k < loancnt; k++) {
-				if (displayType == 4) {
+				//if (displayType == 4) {
 					if (loanArray[k].getLoanId() != 0 ) {
+						rowCount++;
 						System.out.println("" + 
 								" | " + padRight(loanArray[k].getLoanId().toString(), maxLenLoanId, " ") + 
 								" | " + padRight(loanArray[k].getBook().getTitle(), maxLenBookTitle, " ") + 
 								" | " + padRight(loanArray[k].getUser().getName(), maxLenUserName, " ") +
 								" |");
 					}
-				}
+				//}
 			}
 		}
+		
+		return rowCount;
 	}
 	
 
